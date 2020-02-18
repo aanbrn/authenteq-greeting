@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: authenteq-greeting
+  cloud:
+    kubernetes:
+      enabled: false
+
+---
+spring:
+  profiles: kubernetes
+  cloud:
+    kubernetes:
+      enabled: true

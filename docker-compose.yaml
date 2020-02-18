@@ -1,0 +1,16 @@
+version: "3.6"
+
+services:
+  authenteq-greeting:
+    image: docker.authenteq.com/authenteq-greeting:0.1.0-SNAPSHOT
+    container_name: authenteq-greeting
+    environment:
+      AUTHENTEQ_GREETING_NAME: "Docker"
+    ports:
+      - 8080:8080
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "256m"
+        max-file: "8"
+    restart: always

@@ -1,0 +1,67 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: authenteq-greeting
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: authenteq-greeting:default
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+subjects:
+  - kind: ServiceAccount
+    name: default
+    namespace: authenteq-greeting
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: authenteq-greeting
+  namespace: authenteq-greeting
+data:
+  application.yaml: |
+    authenteq:
+      greeting:
+        name: Kubernetes
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: authenteq-greeting
+  name: authenteq-greeting
+  namespace: authenteq-greeting
+spec:
+  selector:
+    matchLabels:
+      app: authenteq-greeting
+  template:
+    metadata:
+      labels:
+        app: authenteq-greeting
+    spec:
+      containers:
+        - image: docker.authenteq.com/authenteq-greeting:0.1.0-SNAPSHOT
+          name: authenteq-greeting
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: authenteq-greeting
+  name: authenteq-greeting
+  namespace: authenteq-greeting
+spec:
+  selector:
+    app: authenteq-greeting
+  type: LoadBalancer
+  ports:
+    - port: 8080
