@@ -7,6 +7,7 @@ echo "\nBuilding...\n"
 echo "\nDeploying...\n"
 
 minikube cache add docker.authenteq.com/authenteq-greeting:0.1.0-SNAPSHOT || exit 1
+minikube cache reload || exit 1
 
 kubectl apply -f deployment.yaml || exit 1
 
